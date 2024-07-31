@@ -10,6 +10,7 @@ import 'hardhat-contract-sizer'
 import '@nomiclabs/hardhat-ethers'
 import '@layerzerolabs/toolbox-hardhat'
 import { HardhatUserConfig, HttpNetworkAccountsUserConfig } from 'hardhat/types'
+import './deploy/send-oft'
 
 import { EndpointId } from '@layerzerolabs/lz-definitions'
 
@@ -67,6 +68,9 @@ const config: HardhatUserConfig = {
     namedAccounts: {
         deployer: {
             default: 0, // wallet address of index[0], of the mnemonic in .env
+        },
+        owner: {
+            default: 0,
         },
     },
 }

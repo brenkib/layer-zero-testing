@@ -2,8 +2,8 @@
 // Compatible with OpenZeppelin Contracts ^5.0.0
 pragma solidity ^0.8.22;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@layerzerolabs/oft-evm/contracts/OFT.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+import { OFT } from "@layerzerolabs/oft-evm/contracts/OFT.sol";
 
 contract BrenkibERC20 is OFT {
     constructor(

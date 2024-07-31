@@ -1,6 +1,6 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { expect } from 'chai'
-import { Contract, ContractFactory } from 'ethers'
+import {BigNumber, Contract, ContractFactory} from 'ethers'
 import { deployments, ethers } from 'hardhat'
 
 import { Options } from '@layerzerolabs/lz-v2-utilities'
@@ -25,7 +25,7 @@ describe('MyOFT Test', function () {
         // Contract factory for our tested contract
         //
         // We are using a derived contract that exposes a mint() function for testing purposes
-        MyOFT = await ethers.getContractFactory('MyOFTMock')
+        MyOFT = await ethers.getContractFactory('BrenkibERC20')
 
         // Fetching the first three signers (accounts) from Hardhat's local Ethereum network
         const signers = await ethers.getSigners()
@@ -52,8 +52,8 @@ describe('MyOFT Test', function () {
         mockEndpointV2B = await EndpointV2Mock.deploy(eidB)
 
         // Deploying two instances of MyOFT contract with different identifiers and linking them to the mock LZEndpoint
-        myOFTA = await MyOFT.deploy('aOFT', 'aOFT', mockEndpointV2A.address, ownerA.address)
-        myOFTB = await MyOFT.deploy('bOFT', 'bOFT', mockEndpointV2B.address, ownerB.address)
+        myOFTA = await MyOFT.deploy(mockEndpointV2A.address, ownerA.address)
+        myOFTB = await MyOFT.deploy(mockEndpointV2B.address, ownerB.address)
 
         // Setting destination endpoints in the LZEndpoint mock for each MyOFT instance
         await mockEndpointV2A.setDestLzEndpoint(myOFTB.address, mockEndpointV2B.address)
@@ -68,8 +68,6 @@ describe('MyOFT Test', function () {
     it('should send a token from A address to B address via each OFT', async function () {
         // Minting an initial amount of tokens to ownerA's address in the myOFTA contract
         const initialAmount = ethers.utils.parseEther('100')
-        await myOFTA.mint(ownerA.address, initialAmount)
-
         // Defining the amount of tokens to send and constructing the parameters for the send operation
         const tokensToSend = ethers.utils.parseEther('1')
 
@@ -97,7 +95,7 @@ describe('MyOFT Test', function () {
         const finalBalanceB = await myOFTB.balanceOf(ownerB.address)
 
         // Asserting that the final balances are as expected after the send operation
-        expect(finalBalanceA).eql(initialAmount.sub(tokensToSend))
-        expect(finalBalanceB).eql(tokensToSend)
+        expect(finalBalanceA.toString()).eql(initialAmount.sub(tokensToSend).toString())
+        expect(finalBalanceB.toString()).eql(tokensToSend.toString())
     })
 })
