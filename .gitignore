@@ -12,6 +12,7 @@ artifacts
 
 # LayerZero specific files
 .layerzero
+deployments
 
 # foundry test compilation files
 out
